@@ -14,8 +14,7 @@
         }));
     in {
       packages = forAllSystems (pkgs: {
-        default = import ./pipecord.nix
-      })
-
+        default = import ./.;
+      });
   };
 }
