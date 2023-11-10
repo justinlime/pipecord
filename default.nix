@@ -3,4 +3,4 @@
 buildGoModule (finalAttrs: {
   pname = "pipecord";
   src = ./.;
-}
+});
