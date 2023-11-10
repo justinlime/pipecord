@@ -1,6 +1,6 @@
 { lib, buildGoModule }:
 
-buildGoModule (finalAttrs: {
+buildGoModule {
   pname = "pipecord";
   src = ./.;
-});
+}
