@@ -1,26 +1,38 @@
 package main
 
 import (
-    "github.com/bwmarrin/discordgo"
+	"github.com/bwmarrin/discordgo"
 
-    "bufio"
-    "flag"
-    "fmt"
-    "io"
-    "log"
-    "os"
+	"bufio"
+	"flag"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"time"
 )
 
 var(
     Message string
     Token string
     Channel string
+    Log string
 )      
 
 func init() {
 	flag.StringVar(&Token, "t", "", "Bot Token")
-	flag.StringVar(&Channel, "c", "", "Channel")
+	flag.StringVar(&Channel, "c", "", "Channel ID")
+    flag.StringVar(&Log, "l", "Log", "Log Message Title")    
 	flag.Parse()
+    Log = "## " + Log + "\n### " + time.Now().Format(time.RFC1123)
+    if Token == "" {
+        fmt.Printf("No token passed, pass one with the -t flag\n\n") 
+        os.Exit(1)   
+    }    
+    if Channel == "" {
+        fmt.Printf("No ChannelID passed, pass one with the -c flag\n\n")
+        os.Exit(1)   
+    } 
 }
 
 func main() {
@@ -61,14 +73,6 @@ func main() {
 }
 
 func sendToBot(){
-    if Token == "" {
-        log.Fatal("No token passed, pass one with the -t flag") 
-        return
-    }    
-    if Channel == "" {
-        log.Fatal("No ChannelID passed, pass one with the -c flag")
-        return
-    } 
     dg, err := discordgo.New("Bot " + Token)
     if err != nil {
         fmt.Printf("Error!")
@@ -79,7 +83,8 @@ func sendToBot(){
 		fmt.Println("error opening connection,", err)
 		return
 	}
-    dg.ChannelMessageSend(Channel, Message)
+    dg.ChannelMessageSend(Channel, Log + "\n```" + Message + "```")
 
     dg.Close()  
+    os.Exit(0)   
 }      
