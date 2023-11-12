@@ -14,7 +14,7 @@
         }));
     in {
       packages = forAllSystems (pkgs: {
-        default = import ./.;
+        default = pkgs.callPackage ./default.nix { } ;
       });
   };
 }
